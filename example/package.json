@@ -1,0 +1,16 @@
+{
+  "name": "example",
+  "version": "1.0.0",
+  "description": "",
+  "main": "basic.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "aws": "0.0.3-2",
+    "aws-xray-sdk": "^2.5.0",
+    "hapi": "^17.8.5"
+  }
+}
