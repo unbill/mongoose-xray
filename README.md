@@ -13,7 +13,7 @@ For more details on using XRay, see the [docs](https://docs.aws.amazon.com/xray-
 
 Simply register as a normal mongoose plugin. 
 
-*Note* that the plugin must be added before a connection is established.
+*Note* that the plugin must be added before the model is created from the schema.
 
 ```js
 
