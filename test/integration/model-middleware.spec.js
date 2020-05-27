@@ -16,6 +16,7 @@ describe('Model middleware applied to schema', function () {
   let segment;
   let ns;
   let xRayContext;
+  let counter = 1;
 
   before(async function () {
     xraySchema.plugin(xRayPlugin, { verbose: true });
@@ -24,7 +25,7 @@ describe('Model middleware applied to schema', function () {
   });
 
   beforeEach(async function () {
-    segment = new AWSXRay.Segment('mongoose-xray-test');
+    segment = new AWSXRay.Segment('mongoose-xray-test_' + counter++);
 
     ns = AWSXRay.getNamespace();
     xRayContext = ns.createContext();
@@ -35,9 +36,38 @@ describe('Model middleware applied to schema', function () {
   afterEach(function () {
     segment.close();
     ns.exit(xRayContext);
+    sinon.restore();
   });
 
-  it('should aggregate with plugin enabled', async function () {
+  // it('should insertMany with plugin enabled', async function () {
+  //   const addSubsegmentSpy = sinon.spy(segment, 'addNewSubsegment');
+  //   await model.insertMany([
+  //     {
+  //       type: 'testType',
+  //       identifier: '1234567890',
+  //       widgetCount: 1,
+  //     },
+  //     {
+  //       type: 'testType2',
+  //       identifier: '1234567891',
+  //       widgetCount: 3,
+  //     },
+  //     {
+  //       type: 'testType',
+  //       identifier: '1234567892',
+  //       widgetCount: 2,
+  //     },
+  //   ]);
+  //
+  //   expect(addSubsegmentSpy).to.have.been.calledOnce();
+  //   expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
+  //   const subsegment = addSubsegmentSpy.returnValues[0];
+  //   const annotations = subsegment.annotations;
+  //   expect(annotations.operation).to.equal('insertMany');
+  //   expect(subsegment.isClosed()).to.equal(true);
+  // });
+
+  it('should insertMany twice with plugin enabled', async function () {
     const addSubsegmentSpy = sinon.spy(segment, 'addNewSubsegment');
     await model.insertMany([
       {
@@ -56,11 +86,36 @@ describe('Model middleware applied to schema', function () {
         widgetCount: 2,
       },
     ]);
+    await model.insertMany([
+      {
+        type: 'testType3',
+        identifier: '1234567896',
+        widgetCount: 1,
+      },
+      {
+        type: 'testType4',
+        identifier: '1234567897',
+        widgetCount: 3,
+      },
+      {
+        type: 'testType',
+        identifier: '1234567898',
+        widgetCount: 2,
+      },
+    ]);
 
-    expect(addSubsegmentSpy).to.have.been.calledOnce();
+    expect(addSubsegmentSpy).to.have.been.calledTwice();
+
     expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
     const subsegment = addSubsegmentSpy.returnValues[0];
-    const metaData = subsegment.metadata.default;
-    expect(metaData.operation).to.equal('insertMany');
+    const annotations = subsegment.annotations;
+    expect(annotations.operation).to.equal('insertMany');
+    expect(subsegment.isClosed()).to.equal(true);
+
+    expect(addSubsegmentSpy.returnValues[1]).to.be.ok();
+    const subsegment2 = addSubsegmentSpy.returnValues[1];
+    const annotations2 = subsegment2.annotations;
+    expect(annotations2.operation).to.equal('insertMany');
+    expect(subsegment2.isClosed()).to.equal(true);
   });
 });

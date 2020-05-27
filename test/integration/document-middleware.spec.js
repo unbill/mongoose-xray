@@ -48,9 +48,11 @@ describe('Document middleware applied to schema', function () {
     expect(addSubsegmentSpy).to.have.been.calledOnce();
     expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
     const subsegment = addSubsegmentSpy.returnValues[0];
+    expect(subsegment.annotations.model).to.equal('xray');
+    expect(subsegment.annotations.operation).to.equal('save');
     const metaData = subsegment.metadata.default;
-    expect(metaData.operation).to.equal('save');
     expect(metaData.document).to.be.ok();
+    expect(subsegment.isClosed()).to.equal(true);
   });
 
   it('should remove with plugin enabled', async function () {
@@ -66,8 +68,9 @@ describe('Document middleware applied to schema', function () {
     expect(newDoc).to.be.ok();
     expect(addSubsegmentSpy).to.have.been.calledTwice();
     const subsegment = addSubsegmentSpy.returnValues[1];
+    expect(subsegment.annotations.model).to.equal('xray');
+    expect(subsegment.annotations.operation).to.equal('remove');
     const metaData = subsegment.metadata.default;
-    expect(metaData.operation).to.equal('remove');
     expect(metaData.document).to.be.ok();
   });
 });

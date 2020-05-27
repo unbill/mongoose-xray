@@ -16,6 +16,7 @@ describe('Document middleware', function () {
   beforeEach(function () {
     subsegmentFake = {
       addMetadata: sinon.spy(),
+      addAnnotation: sinon.spy(),
     };
     segmentFake = {
       addNewSubsegment: sinon.stub().returns(subsegmentFake),
@@ -45,9 +46,13 @@ describe('Document middleware', function () {
     };
     middleware.createDocumentSubsegment('save', document);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      document.constructor.modelName
+      'testModel-save'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledOnceWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'save'
     );
@@ -63,9 +68,9 @@ describe('Document middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      document.constructor.modelName
+      'testModel-save'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'save'
     );

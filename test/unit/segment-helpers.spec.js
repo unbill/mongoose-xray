@@ -7,7 +7,8 @@ chai.use(dirtyChai);
 
 const segmentHelpers = require('../../lib/segment-helpers');
 
-const segmentFake = {
+const subsegmentFake = {
+  id: '1234567890',
   closedState: false,
   currentError: null,
   addError: function (err) {
@@ -28,30 +29,41 @@ const segmentFake = {
   },
 };
 
+const segmentFake = {
+  closedState: false,
+  isClosed: function () {
+    return this.closedState;
+  },
+  subsegments: [subsegmentFake],
+};
+
 describe('Segment helpers', function () {
   afterEach(function () {
-    segmentFake.reset();
+    subsegmentFake.reset();
     sinon.restore();
   });
 
-  it('should close current segment', function () {
+  it('should close current subsegment', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
-    segmentHelpers.closeCurrentSegment();
-    expect(segmentFake.isClosed()).to.equal(true);
+    segmentHelpers.closeCurrentSegment(subsegmentFake.id);
+    expect(subsegmentFake.isClosed()).to.equal(true);
   });
 
   it('should not err if segment already closed', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
-    segmentFake.closedState = true;
-    segmentHelpers.closeCurrentSegment();
-    expect(segmentFake.isClosed()).to.equal(true);
+    subsegmentFake.closedState = true;
+    segmentHelpers.closeCurrentSegment(subsegmentFake.id);
+    expect(subsegmentFake.isClosed()).to.equal(true);
   });
 
   it('should add error to current segment and close it', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
-    segmentHelpers.handleSegmentError(new Error('test error'));
-    expect(segmentFake.isClosed()).to.equal(true);
-    expect(segmentFake.currentError).to.be.ok();
-    expect(segmentFake.currentError.message).to.equal('test error');
+    segmentHelpers.handleSegmentError(
+      new Error('test error'),
+      subsegmentFake.id
+    );
+    expect(subsegmentFake.isClosed()).to.equal(true);
+    expect(subsegmentFake.currentError).to.be.ok();
+    expect(subsegmentFake.currentError.message).to.equal('test error');
   });
 });

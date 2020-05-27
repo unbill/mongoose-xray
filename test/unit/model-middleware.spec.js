@@ -11,6 +11,7 @@ const middleware = require('../../lib/model-middleware');
 
 const subsegmentFake = {
   addMetadata: sinon.spy(),
+  addAnnotation: sinon.spy(),
 };
 const segmentFake = {
   addNewSubsegment: sinon.stub().returns(subsegmentFake),
@@ -35,13 +36,17 @@ describe('Model middleware', function () {
   it('should create a model subsegment', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
     const model = {
-      modelName: 'test model name',
+      modelName: 'testModelName',
     };
     middleware.createModelSubsegment('insertMany', model);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      model.modelName
+      'testModelName-insertMany'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledOnceWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'insertMany'
     );

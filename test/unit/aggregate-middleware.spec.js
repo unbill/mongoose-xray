@@ -16,6 +16,7 @@ describe('Aggregate middleware', function () {
   beforeEach(function () {
     subsegmentFake = {
       addMetadata: sinon.spy(),
+      addAnnotation: sinon.spy(),
     };
     segmentFake = {
       addNewSubsegment: sinon.stub().returns(subsegmentFake),
@@ -47,9 +48,13 @@ describe('Aggregate middleware', function () {
     };
     middleware.createAggregateSubsegment('aggregate', aggregate);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      aggregate.model().modelName
+      'testModel-aggregate'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledOnceWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'aggregate'
     );
@@ -67,9 +72,9 @@ describe('Aggregate middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      aggregate.model().modelName
+      'testModel-aggregate'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'aggregate'
     );

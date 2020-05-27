@@ -68,12 +68,15 @@ describe('Aggregate middleware applied to schema', function () {
       },
     ]);
 
-    expect(newDoc).to.have.length(2);
+    expect(newDoc.length).to.be.greaterThan(1);
     expect(addSubsegmentSpy).to.have.been.calledOnce();
     expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
     const subsegment = addSubsegmentSpy.returnValues[0];
-    const metaData = subsegment.metadata.default;
-    expect(metaData.operation).to.equal('aggregate');
-    expect(metaData.aggregate).to.be.ok();
+    expect(subsegment.name).to.equal('xray-aggregate');
+    const annotations = subsegment.annotations;
+    expect(annotations.operation).to.equal('aggregate');
+    expect(annotations.model).to.equal('xray');
+    expect(subsegment.metadata.default.aggregate).to.be.ok();
+    expect(subsegment.isClosed()).to.equal(true);
   });
 });

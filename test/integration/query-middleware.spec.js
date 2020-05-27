@@ -204,7 +204,8 @@ const verifySpy = (addSubsegmentSpy, operation) => {
   expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
   const subsegment = addSubsegmentSpy.returnValues[0];
   const metaData = subsegment.metadata.default;
-  expect(metaData.operation).to.equal(operation);
+  expect(subsegment.annotations.model).to.equal('xray');
+  expect(subsegment.annotations.operation).to.equal(operation);
   expect(metaData.filter).to.be.ok();
   return metaData;
 };

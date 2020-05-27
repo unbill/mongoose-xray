@@ -16,6 +16,7 @@ describe('Query middleware', function () {
   beforeEach(function () {
     subsegmentFake = {
       addMetadata: sinon.spy(),
+      addAnnotation: sinon.spy(),
     };
     segmentFake = {
       addNewSubsegment: sinon.stub().returns(subsegmentFake),
@@ -33,8 +34,8 @@ describe('Query middleware', function () {
     };
     middleware.registerQueryMiddleware(schema);
 
-    expect(schema.pre).to.have.been.callCount(10);
-    expect(schema.post).to.have.been.callCount(20);
+    expect(schema.pre).to.have.been.callCount(12);
+    expect(schema.post).to.have.been.callCount(24);
   });
 
   it('should create a query subsegment without options', function () {
@@ -46,9 +47,9 @@ describe('Query middleware', function () {
     };
     middleware.createQuerySubsegment('find', query);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      query.model.modelName
+      'testModel-find'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'find'
     );
@@ -72,9 +73,13 @@ describe('Query middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      query.model.modelName
+      'testModel-find'
     );
-    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'operation',
       'find'
     );
