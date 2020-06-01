@@ -44,9 +44,9 @@ describe('Model middleware', function () {
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
-      'testModel'
+      'testModelName'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'insertMany'
     );

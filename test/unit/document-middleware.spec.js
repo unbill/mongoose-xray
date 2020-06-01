@@ -52,7 +52,7 @@ describe('Document middleware', function () {
       'model',
       'testModel'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'save'
     );
@@ -70,7 +70,7 @@ describe('Document middleware', function () {
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
       'testModel-save'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'save'
     );

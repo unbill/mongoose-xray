@@ -45,23 +45,20 @@ describe('Segment helpers', function () {
 
   it('should close current subsegment', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
-    segmentHelpers.closeCurrentSegment(subsegmentFake.id);
+    segmentHelpers.closeCurrentSegment(subsegmentFake);
     expect(subsegmentFake.isClosed()).to.equal(true);
   });
 
   it('should not err if segment already closed', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
     subsegmentFake.closedState = true;
-    segmentHelpers.closeCurrentSegment(subsegmentFake.id);
+    segmentHelpers.closeCurrentSegment(subsegmentFake);
     expect(subsegmentFake.isClosed()).to.equal(true);
   });
 
   it('should add error to current segment and close it', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
-    segmentHelpers.handleSegmentError(
-      new Error('test error'),
-      subsegmentFake.id
-    );
+    segmentHelpers.handleSegmentError(new Error('test error'), subsegmentFake);
     expect(subsegmentFake.isClosed()).to.equal(true);
     expect(subsegmentFake.currentError).to.be.ok();
     expect(subsegmentFake.currentError.message).to.equal('test error');

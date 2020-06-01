@@ -54,7 +54,7 @@ describe('Aggregate middleware', function () {
       'model',
       'testModel'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'aggregate'
     );
@@ -74,7 +74,7 @@ describe('Aggregate middleware', function () {
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
       'testModel-aggregate'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'aggregate'
     );

@@ -49,13 +49,9 @@ describe('Query middleware', function () {
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
       'testModel-find'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'find'
-    );
-    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
-      'filter',
-      query.getFilter()
     );
   });
 
@@ -79,7 +75,7 @@ describe('Query middleware', function () {
       'model',
       'testModel'
     );
-    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
       'find'
     );

@@ -108,14 +108,14 @@ describe('Model middleware applied to schema', function () {
 
     expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
     const subsegment = addSubsegmentSpy.returnValues[0];
-    const annotations = subsegment.annotations;
-    expect(annotations.operation).to.equal('insertMany');
+    expect(subsegment.annotations.model).to.equal('xray');
+    expect(subsegment.metadata.default.operation).to.equal('insertMany');
     expect(subsegment.isClosed()).to.equal(true);
 
     expect(addSubsegmentSpy.returnValues[1]).to.be.ok();
     const subsegment2 = addSubsegmentSpy.returnValues[1];
-    const annotations2 = subsegment2.annotations;
-    expect(annotations2.operation).to.equal('insertMany');
+    expect(subsegment2.annotations.model).to.equal('xray');
+    expect(subsegment2.metadata.default.operation).to.equal('insertMany');
     expect(subsegment2.isClosed()).to.equal(true);
   });
 });

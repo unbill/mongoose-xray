@@ -73,9 +73,9 @@ describe('Aggregate middleware applied to schema', function () {
     expect(addSubsegmentSpy.returnValues[0]).to.be.ok();
     const subsegment = addSubsegmentSpy.returnValues[0];
     expect(subsegment.name).to.equal('xray-aggregate');
-    const annotations = subsegment.annotations;
-    expect(annotations.operation).to.equal('aggregate');
-    expect(annotations.model).to.equal('xray');
+
+    expect(subsegment.annotations.model).to.equal('xray');
+    expect(subsegment.metadata.default.operation).to.equal('aggregate');
     expect(subsegment.metadata.default.aggregate).to.be.ok();
     expect(subsegment.isClosed()).to.equal(true);
   });
