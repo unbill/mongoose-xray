@@ -58,6 +58,26 @@ describe('Document middleware', function () {
     );
   });
 
+  it('should create a document subsegment with name and path if no model name is present', function () {
+    sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
+    const document = {
+      constructor: { name: 'testModel', path: 'some-path' },
+      testProperty: 'testProperty',
+    };
+    middleware.createDocumentSubsegment('save', document);
+    expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
+      'testModel-some-path-save'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel-some-path'
+    );
+    expect(subsegmentFake.addMetadata).to.have.been.calledWith(
+      'operation',
+      'save'
+    );
+  });
+
   it('should create a document subsegment with verbose option', function () {
     sinon.stub(AWSXRay, 'getSegment').returns(segmentFake);
     const document = {
