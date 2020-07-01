@@ -58,6 +58,7 @@ describe('Aggregate middleware', function () {
       'operation',
       'aggregate'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 
   it('should create an aggregate subsegment with verbose option', function () {
@@ -78,6 +79,7 @@ describe('Aggregate middleware', function () {
       'operation',
       'aggregate'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'options',
       aggregate.options

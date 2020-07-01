@@ -56,6 +56,7 @@ describe('Document middleware', function () {
       'operation',
       'save'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 
   it('should create a document subsegment with name and path if no model name is present', function () {
@@ -76,6 +77,8 @@ describe('Document middleware', function () {
       'operation',
       'save'
     );
+
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 
   it('should create a document subsegment with verbose option', function () {
@@ -98,5 +101,6 @@ describe('Document middleware', function () {
       'document',
       JSON.stringify(document)
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 });
