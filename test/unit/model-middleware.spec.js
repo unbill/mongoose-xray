@@ -40,11 +40,15 @@ describe('Model middleware', function () {
     };
     middleware.createModelSubsegment('insertMany', model);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModelName-insertMany'
+      'mongodb.model'
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
       'testModelName'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModelName-insertMany',
+      'model'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',

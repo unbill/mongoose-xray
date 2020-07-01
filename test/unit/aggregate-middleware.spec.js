@@ -48,11 +48,15 @@ describe('Aggregate middleware', function () {
     };
     middleware.createAggregateSubsegment('aggregate', aggregate);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-aggregate'
+      'mongodb.aggregate'
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
       'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-aggregate',
+      'aggregate'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
@@ -73,7 +77,15 @@ describe('Aggregate middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-aggregate'
+      'mongodb.aggregate'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-aggregate',
+      'aggregate'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
