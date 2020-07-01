@@ -53,6 +53,7 @@ describe('Query middleware', function () {
       'operation',
       'find'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 
   it('should create a query subsegment with verbose option', function () {
@@ -79,6 +80,7 @@ describe('Query middleware', function () {
       'operation',
       'find'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'filter',
       query.getFilter()

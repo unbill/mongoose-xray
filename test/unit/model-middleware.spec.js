@@ -50,5 +50,6 @@ describe('Model middleware', function () {
       'operation',
       'insertMany'
     );
+    expect(subsegmentFake.namespace).to.equal('remote');
   });
 });
