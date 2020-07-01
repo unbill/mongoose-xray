@@ -46,11 +46,15 @@ describe('Document middleware', function () {
     };
     middleware.createDocumentSubsegment('save', document);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-save'
+      'mongodb.document'
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
       'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-save',
+      'document'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
@@ -67,11 +71,15 @@ describe('Document middleware', function () {
     };
     middleware.createDocumentSubsegment('save', document);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-some-path-save'
+      'mongodb.document'
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
       'testModel-some-path'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-some-path-save',
+      'document'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
@@ -91,7 +99,11 @@ describe('Document middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-save'
+      'mongodb.document'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-save',
+      'document'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',

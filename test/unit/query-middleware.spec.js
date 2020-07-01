@@ -47,7 +47,15 @@ describe('Query middleware', function () {
     };
     middleware.createQuerySubsegment('find', query);
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-find'
+      'mongodb.query'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'model',
+      'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-find',
+      'query'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
@@ -70,11 +78,15 @@ describe('Query middleware', function () {
       verbose: true,
     });
     expect(segmentFake.addNewSubsegment).to.have.been.calledOnceWith(
-      'testModel-find'
+      'mongodb.query'
     );
     expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
       'model',
       'testModel'
+    );
+    expect(subsegmentFake.addAnnotation).to.have.been.calledWith(
+      'testModel-find',
+      'query'
     );
     expect(subsegmentFake.addMetadata).to.have.been.calledWith(
       'operation',
