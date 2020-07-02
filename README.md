@@ -43,7 +43,7 @@ mongoose.plugin(require('mongoose-xray'), { verbose:true });
 
 ## Output
 For all operations, XRay will record:
-- Model name + operation as the segment name
+- Model name + operation as an annotation
 - Model name as an annotation
 - Operation as metadata
 
